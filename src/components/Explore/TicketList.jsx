@@ -31,14 +31,14 @@ export default function TicketList({ data }) {
         }
     }
     return <div className="w-full overflow-hidden relative" ref={container}>
-        <div className="h-56 flex events-list">
+        <div className="h-48 flex events-list">
             {data.map((d, i) => {
                 return <div key={i} className="w-72 relative">
                     <TicketElement image={d.thumbnail} text={d.eventName} link={`/${d.category}/${d.eventId}`} />
                 </div>
             })}
         </div>
-        <div onClick={shiftLeft} className="cursor-pointer z-10 bg-gradient-to-r from-[rgba(0,0,0,0.67)] to-transparent absolute top-0 left-0 text-6xl font-light flex items-center h-full ml-2 pr-5">{"<"}</div>
-        <div onClick={shiftRight} className="cursor-pointer z-10 bg-gradient-to-l from-[rgba(0,0,0,0.67)] to-transparent absolute top-0 right-0 text-6xl font-light flex items-center h-full pl-5 mr-2">{">"}</div>
+        <div onClick={shiftLeft} className="cursor-pointer z-10 bg-gradient-to-r from-[rgba(0,0,0,0.67)] to-transparent absolute top-0 left-0 text-3xl font-light flex items-center h-full ml-2 pr-5">{"<"}</div>
+        <div onClick={shiftRight} className="cursor-pointer z-10 bg-gradient-to-l from-[rgba(0,0,0,0.67)] to-transparent absolute top-0 right-0 text-3xl font-light flex items-center h-full pl-5 mr-2">{">"}</div>
     </div>
 }

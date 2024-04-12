@@ -4,6 +4,7 @@ import Home from './home'
 import Header from './components/Header-Footer/header'
 import Company from './company'
 import Explore from './explore'
+import Event from './event'
 function App() {
   return (
     <Router>
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/company" element={<Company />} />
         <Route path="/:category" element={<Explore />} />
+        <Route path="/:category/:id" element={<Event />} />
       </Routes>
     </Router>
   )
