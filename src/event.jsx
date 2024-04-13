@@ -1,24 +1,30 @@
 import { useParams } from "react-router-dom"
 import SearchBar from "./components/Explore/searchbar"
 import TicketList from "./components/Explore/TicketList"
+import { get, ref, set } from "firebase/database"
+import { database } from "../firebaseConfig"
+import { useState } from "react"
 export default function Event() {
-    let data = {
-        eventId: "grubfest2024",
-        eventName: "The Grub Fest",
-        eventDate: "29/03/24",
-        bookingStart: "20/03/24",
-        bookingEnd: "28/03/24",
-        totalTickets: -1,
-        bookedTickets: 50000,
-        description: "Grub Fest is India's ultimate food festival, a melting pot of flavors, where foodies unite to savor a variety of delectable dishes from across the country.",
-        externalLink: "https://www.instagram.com/thegrubfest/?hl=en",
-        ticketPrice: 800,
-        category: "Concerts",
-        thumbnail: "category/ConcertsHero.png",
-        image: "/grub.png",
-        bookingOpen: true
-    }
     const { category, id } = useParams()
+    const [data, setData] = useState({})
+    const [dataKey, setDataKey] = useState({})
+    const [purchase, setPurchase] = useState(false)
+    get(ref(database, `events/${category}`)).then((snap) => {
+        let d = snap.val()
+        if (d != null) {
+            let l = Object.keys(d)
+            for (let i = 0; i < l.length; i++) {
+                let e = d[l[i]]
+
+                if (e.eventId == id) {
+                    setData(e)
+                    setDataKey(l[i])
+                }
+            }
+        }
+    })
+
+
     return (<div className="w-full h-full">
         <img className="mt-24 w-full" src={`/category/${category}Hero.png`}></img>
         <div className=" bg-gradient-to-l from-black via-[rgba(0,0,0,0.34)] to-transparent  w-full h-full absolute top-0 left-0 mt-12"></div>
@@ -42,7 +48,12 @@ export default function Event() {
                         <span>Price : </span>
                         <span className="text-6xl font-thin">{data.ticketPrice}/-</span>
                     </div>
-                    <button className="ml-32 bg-white text-black ">Buy</button>
+                    {purchase ? <div>Purchased</div> : (<button onClick={() => {
+                        let d = data
+                        d.bookedTickets += 1
+                        set(ref(database, `events/${category}/${dataKey}`), d)
+                        setPurchase(true)
+                    }} className="ml-32 bg-white text-black ">Buy</button>)}
                 </div>
             </div>
         </div>

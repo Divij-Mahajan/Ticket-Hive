@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-
+import { database } from "../firebaseConfig";
+import { onValue, push, ref, set } from 'firebase/database';
 
 function RootDiv({ setShow }) {
     return <div className="py-28 flex flex-col justify-center items-center px-28 gap-10 h-full w-full">
@@ -11,11 +12,204 @@ function RootDiv({ setShow }) {
 
 }
 function NewDiv({ setShow }) {
+
+    let data = {
+        eventId: "grubfest2024",
+        eventName: "The Grub Fest",
+        company: "somecompany",
+        eventDate: "29/03/24",
+        bookingStart: "20/03/24",
+        bookingEnd: "28/03/24",
+        totalTickets: -1,
+        bookedTickets: 50000,
+        description: "Grub Fest is India's ultimate food festival, a melting pot of flavors, where foodies unite to savor a variety of delectable dishes from across the country.",
+        externalLink: "https://www.instagram.com/thegrubfest/?hl=en",
+        ticketPrice: 800,
+        category: "Concerts",
+        thumbnail: "category/ConcertsHero.png",
+        image: "/grub.png",
+        bookingOpen: true
+    }
+    const [eventName, setEventName] = useState("")
+    const [eventId, setId] = useState("")
+    const [eventDate, setEventDate] = useState('');
+    const [bookingStart, setBookingStart] = useState('');
+    const [bookingEnd, setBookingEnd] = useState('');
+    const [totalTickets, setTotalTickets] = useState('');
+    const [description, setDescription] = useState('');
+    const [category, setCategory] = useState("")
+    const [externalLink, setExternalLink] = useState('');
+    const [ticketPrice, setTicketPrice] = useState('');
+    const [thumbnail, setThumbnail] = useState('');
+    const [image, setImage] = useState('');
     return <div className="py-28 flex flex-col justify-center items-center px-28 gap-10 h-full w-full">
         <button onClick={() => { setShow("root") }} className=" absolute top-2 right-2  text-md bg-white text-black hover:bg-black hover:text-white">Return</button>
+        <div className="  flex flex-col gap-4">
+            <div className="flex gap-10">
+                <div>
+                    <div>Event Name</div>
+                    <input
+                        className="text-black rounded-lg h-10"
+                        type="text"
+                        value={eventName}
+                        onChange={(e) => { setEventName(e.target.value) }}
+                    />
+                </div>
+                <div>
+                    <div>Event Id</div>
+                    <input
+                        className="text-black rounded-lg h-10"
+                        type="text"
+                        value={eventId}
+                        onChange={(e) => { setId(e.target.value) }}
+                    />
 
-        <button onClick={() => { setShow("past") }} className="text-2xl bg-white text-black  hover:bg-black hover:text-white">Submit</button>
-    </div>
+                </div>
+            </div>
+            <div className="flex gap-10">
+                <div>
+                    <div>Event Date</div>
+                    <input
+                        className="text-black rounded-lg h-10"
+                        type="date"
+                        value={eventDate}
+                        onChange={(e) => { setEventDate(e.target.value) }}
+                    />
+                </div>
+
+                <div>
+                    <div>Booking Start</div>
+                    <input
+                        className="text-black rounded-lg h-10"
+                        type="date"
+                        value={bookingStart}
+                        onChange={(e) => { setBookingStart(e.target.value) }}
+                    />
+                </div>
+
+                <div>
+                    <div>Booking End</div>
+                    <input
+                        className="text-black rounded-lg h-10"
+                        type="date"
+                        value={bookingEnd}
+                        onChange={(e) => { setBookingEnd(e.target.value) }}
+                    />
+                </div>
+            </div>
+            <div className="flex gap-10 ">
+
+                <div>
+                    <div>Total Tickets</div>
+                    <input
+                        className="text-black rounded-lg h-10 w-32"
+                        type="number"
+                        value={totalTickets}
+                        onChange={(e) => { setTotalTickets(e.target.value) }}
+                    />
+                </div>
+                <div>
+                    <div>Ticket Price</div>
+                    <input
+                        className="text-black rounded-lg h-10 w-32"
+                        type="number"
+                        value={ticketPrice}
+                        onChange={(e) => { setTicketPrice(e.target.value) }}
+                    />
+                </div>
+                <div>
+                    <div>External Link</div>
+                    <input
+                        className="text-black rounded-lg h-10"
+                        type="text"
+                        value={externalLink}
+                        onChange={(e) => { setExternalLink(e.target.value) }}
+                        placeholder="Enter external link"
+                    />
+                </div>
+            </div>
+
+            <div className="flex gap-10">
+                <div>
+                    <div>Description</div>
+                    <textarea
+                        className="text-black rounded-lg h-10 w-96"
+                        value={description}
+                        onChange={(e) => { setDescription(e.target.value) }}
+                        placeholder="Enter event description"
+                    />
+                </div>
+                <div>
+                    <div>Category</div>
+
+                    <input
+                        type="text"
+                        className="text-black rounded-lg h-10 w-32"
+                        value={category}
+
+                        onChange={(e) => { setCategory(e.target.value) }}
+                    />
+                </div>
+            </div>
+            <div className="flex gap-10">
+                <div>
+                    <div>Thumbnail</div>
+                    <input
+                        className="text-black rounded-lg h-10"
+                        type="text"
+                        value={thumbnail}
+                        onChange={(e) => { setThumbnail(e.target.value) }}
+                        placeholder="Enter thumbnail URL"
+                    />
+                </div>
+
+                <div>
+                    <div>Image</div>
+                    <input
+                        className="text-black rounded-lg h-10"
+                        type="text"
+                        value={image}
+                        onChange={(e) => { setImage(e.target.value) }}
+                        placeholder="Enter image URL"
+                    />
+                </div>
+            </div>
+
+
+        </div>
+
+        <button onClick={() => {
+            let i = 0
+            let t = []
+            while (i < totalTickets) {
+                let tickFormat = eventName[0] + eventName[1] + String(Math.ceil(Math.random() * 100000))
+                if (!t.includes(tickFormat)) {
+                    t.push(tickFormat)
+                    i++
+                }
+            }
+
+            let d = {
+                eventId: eventId,
+                eventName: eventName,
+                company: "somecompany",
+                eventDate: eventDate,
+                bookingStart: bookingStart,
+                bookingEnd: bookingEnd,
+                totalTickets: totalTickets,
+                bookedTickets: 0,
+                description: description,
+                externalLink: externalLink,
+                ticketPrice: ticketPrice,
+                category: category,
+                thumbnail: thumbnail,
+                image: image,
+                tickets: t,
+
+            }
+            push(ref(database, `events/${category}`), d)
+        }} className="text-2xl bg-white text-black  hover:bg-black hover:text-white">Submit</button>
+    </div >
 }
 function PastDiv({ setShow }) {
     let data = [
@@ -71,6 +265,7 @@ function Company() {
         }
         tiles.push(row)
     }
+
 
 
     return (

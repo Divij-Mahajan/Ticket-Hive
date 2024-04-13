@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.2.4",
     "@gsap/react": "^2.1.0",
     "@react-three/fiber": "^8.16.1",
     "@types/three": "^0.163.0",
+    "firebase": "^10.11.0",
     "gsap": "^3.12.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
