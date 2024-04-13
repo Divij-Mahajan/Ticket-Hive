@@ -38,10 +38,11 @@ export default function Event() {
                     <span className="text-5xl">{data.eventName} </span><span className="text-5xl" style={{ color: "rgba(255,255,255,0.6)" }}>/</span><span className="mx-3 text-3xl">{data.eventDate}</span>
                 </div>
                 <div className="w-1/2 my-2 h-1 bg-[rgba(255,255,255,0.6)]"></div>
-                <div className="mt-6">
-                    <div >{data.bookingOpen ? <div>Booking Open : {data.bookingStart} - {data.bookingEnd}</div> : ""}</div>
+                <div className="mt-6 text-2xl">
+                    <div ><div>Bookings Open , {data.bookingStart} - {data.bookingEnd}</div> </div>
                 </div>
-                <div className="mt-3">
+                <div className="mt-3">{data.externalLink}</div>
+                <div className="mt-6">
                     {data.description}...
                 </div>
                 <div className="absolute bottom-0 text-3xl mb-16 flex">

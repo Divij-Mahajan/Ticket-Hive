@@ -16,6 +16,7 @@
     "@types/three": "^0.163.0",
     "firebase": "^10.11.0",
     "gsap": "^3.12.5",
+    "hivesigner": "^3.3.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
