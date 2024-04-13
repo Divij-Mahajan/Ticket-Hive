@@ -1,14 +1,16 @@
 import { useParams } from "react-router-dom"
 import SearchBar from "./components/Explore/searchbar"
 import TicketList from "./components/Explore/TicketList"
-import { get, ref, set } from "firebase/database"
+import { get, push, ref, set } from "firebase/database"
 import { database } from "../firebaseConfig"
 import { useState } from "react"
+import { useAuth0 } from "@auth0/auth0-react"
 export default function Event() {
     const { category, id } = useParams()
     const [data, setData] = useState({})
     const [dataKey, setDataKey] = useState({})
     const [purchase, setPurchase] = useState(false)
+    const { user, isAuthenticated, isLoading } = useAuth0();
     get(ref(database, `events/${category}`)).then((snap) => {
         let d = snap.val()
         if (d != null) {
@@ -50,8 +52,10 @@ export default function Event() {
                     </div>
                     {purchase ? <div>Purchased</div> : (<button onClick={() => {
                         let d = data
-                        d.bookedTickets += 1
-                        set(ref(database, `events/${category}/${dataKey}`), d)
+                        set(ref(database, `events/${category}/${dataKey}/bookedTickets`), d.bookedTickets + 1)
+                        let x = d.tickets[0]
+                        set(ref(database, `events/${category}/${dataKey}/tickets`), d.tickets.splice(1))
+                        push(ref(database, `users/${user.sub}/`), x)
                         setPurchase(true)
                     }} className="ml-32 bg-white text-black ">Buy</button>)}
                 </div>

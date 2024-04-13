@@ -1,8 +1,27 @@
 import { useNavigate } from "react-router-dom";
 import logo from "/logo.png"
+import { useAuth0 } from "@auth0/auth0-react";
+
+const LoginButton = () => {
+    const { loginWithRedirect } = useAuth0();
+
+    return <button onClick={() => loginWithRedirect()}>Log In</button>;
+};
+
+const LogoutButton = () => {
+    const { logout } = useAuth0();
+
+    return (
+        <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+            Log Out
+        </button>
+    );
+};
+
 
 function Header() {
     const navigate = new useNavigate()
+    const { user, isAuthenticated, isLoading } = useAuth0();
     return (
         <div className="fixed top-0 left-0 bg-[--black] h-24 z-10 p-7 flex justify-between" style={{ width: "100vw" }}>
             <div className="flex items-center">
@@ -13,9 +32,10 @@ function Header() {
                 </div>
             </div>
             <div className="text-2xl mr-4 flex items-center gap-10">
-                <a href="#landing-home">Home</a>
-                <a href="#landing-category">Category</a>
-                <a href="#landing-featured">Featured</a>
+                {(isAuthenticated) ?
+                    <LogoutButton /> :
+                    <LoginButton />
+                }
 
             </div>
         </div>
