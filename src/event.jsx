@@ -1,13 +1,20 @@
-import { useNavigate, useParams } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import SearchBar from "./components/Explore/searchbar"
 import TicketList from "./components/Explore/TicketList"
 import { get, push, ref, remove, set } from "firebase/database"
 import { database } from "../firebaseConfig"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAuth0 } from "@auth0/auth0-react"
 import hivesigner from "hivesigner"
 import { Client } from "@hiveio/dhive"
 export default function Event() {
+    const routePath = useLocation();
+    const onTop = () => {
+        window.scrollTo(0, 0);
+    }
+    useEffect(() => {
+        onTop()
+    }, [routePath]);
     const navigate = useNavigate()
     let token;
     try {

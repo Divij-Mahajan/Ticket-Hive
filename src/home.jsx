@@ -1,11 +1,18 @@
 
-import { useRef } from "react"
+import { Suspense, useEffect, useRef } from "react"
 import HomeBackground from "./components/Home/homeBackground"
 import Category from "./components/Home/Category"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import TicketList from "./components/Explore/TicketList"
 
 function Home() {
+    const routePath = useLocation();
+    const onTop = () => {
+        window.scrollTo(0, 0);
+    }
+    useEffect(() => {
+        onTop()
+    }, [routePath]);
     let data = [
         {
             eventId: "grubfest2024",
@@ -44,7 +51,10 @@ function Home() {
     return (
         <div className='w-full h-full '>
             <div id="landing-home" className="absolute top-0 left-0 w-full h-full -z-10">
-                <HomeBackground />
+                <Suspense>
+
+                    <HomeBackground />
+                </Suspense>
             </div>
             <div className='mt-24 flex flex-col'>
                 <div className="mx-24 w-2/5 my-20">
@@ -59,12 +69,12 @@ function Home() {
                 </div>
                 <div className="glass-morphism absolute top-0 right-0 mt-44 w-1/3 mx-12 gap-10 rounded-lg h-3/4 flex flex-col p-16 justify-between">
                     <div className="flex flex-col items-start gap-6">
-                        <div className="md:text-3xl text-xl text-left ">Explore various categories and on going events.</div>
+                        <div className="md:text-2xl text-xl text-left ">Explore various categories and on going events.</div>
                         <a href="#landing-category" className="bg-white text-black  hover:bg-black hover:text-white rounded-lg py-3 px-6 ">Click Here</a>
                     </div>
                     <div className="text-center ">or</div>
                     <div className="flex flex-col items-end gap-6">
-                        <div className="md:text-3xl text-xl text-right ">Looking for hosting an event or partner with us?</div>
+                        <div className="md:text-2xl text-xl text-right ">Looking for hosting an event or partner with us?</div>
                         <button onClick={() => {
                             navigate("/company")
                         }} className="bg-white text-black hover:bg-black hover:text-white">Click Here</button>

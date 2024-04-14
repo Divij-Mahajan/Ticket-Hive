@@ -1,11 +1,12 @@
 import './App.css'
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import { Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom'
 import Home from './home'
 import Header from './components/Header-Footer/header'
 import Company from './company'
 import Explore from './explore'
 import Event from './event'
 function App() {
+
   return (
     <Router>
       <Header />

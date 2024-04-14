@@ -1,7 +1,15 @@
-import { useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import SearchBar from "./components/Explore/searchbar"
 import TicketList from "./components/Explore/TicketList"
+import { useEffect } from "react";
 export default function Explore() {
+    const routePath = useLocation();
+    const onTop = () => {
+        window.scrollTo(0, 0);
+    }
+    useEffect(() => {
+        onTop()
+    }, [routePath]);
     let data = [
         {
             eventId: "grubfest2024",

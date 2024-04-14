@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 import { database } from "../firebaseConfig";
 import { onValue, push, ref, set } from 'firebase/database';
 import { useAuth0 } from "@auth0/auth0-react"
@@ -298,6 +298,13 @@ function PastDiv({ setShow }) {
 }
 
 function Company() {
+    const routePath = useLocation();
+    const onTop = () => {
+        window.scrollTo(0, 0);
+    }
+    useEffect(() => {
+        onTop()
+    }, [routePath]);
     let tileLen = 56
     let rows = 10
     let tiles = []

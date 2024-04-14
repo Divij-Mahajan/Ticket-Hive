@@ -64,7 +64,7 @@ function Category() {
     return <div className="w-full h-full flex flex-col categories gap-3 items-center" ref={container}>
         <div className="flex h-2/3 gap-6 items-center mx-5 overflow-hidden">
             {categories.map((category, i) => {
-                return <img key={i} className={`cat-` + String(i + 1) + " category"} src={`/category/${category}Nav.png`} />
+                return <img key={i} className={`cat-` + String(i + 1) + " category rounded-sm "} src={`/category/${category}Nav.png`} />
             })}
         </div>
         <div className="absolute h-full w-full bg-gradient-to-r from-black via-transparent to-black">

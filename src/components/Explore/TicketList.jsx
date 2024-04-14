@@ -31,7 +31,7 @@ export default function TicketList({ data }) {
         }
     }
     return <div className="w-full overflow-hidden relative" ref={container}>
-        <div className="h-48 flex events-list">
+        <div className="h-48 flex events-list gap-2">
             {data.map((d, i) => {
                 return <div key={i} className="w-72 relative">
                     <TicketElement image={d.thumbnail} text={d.eventName} link={`/${d.category}/${d.eventId}`} />

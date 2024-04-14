@@ -13,5 +13,5 @@ void main() {
     float r = sqrt(pow(vPosition.x, 2.0) + pow(vPosition.z, 2.0));
     float bellCurve = .1 * pow(e, (-0.01 * pow(r, 2.0)));
 
-    gl_FragColor = vec4((vec3(.6, .2, .6) + vec3((R - 30.0) / 6.0)) + vec3(bellCurve) - vec3(r / 160.0), 1.0);
+    gl_FragColor = vec4((vec3(.65, .3, .58) + vec3((R - 30.0) / 12.0)) + vec3(bellCurve) - vec3(r / 160.0), 1.0);
 }

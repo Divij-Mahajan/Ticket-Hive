@@ -23,7 +23,7 @@ function Header() {
     const navigate = new useNavigate()
     const { user, isAuthenticated, isLoading } = useAuth0();
     return (
-        <div className="fixed top-0 left-0 bg-[--black] h-24 z-10 p-7 flex justify-between" style={{ width: "100vw" }}>
+        <div className="fixed top-0 left-0  h-24 z-50 p-7 flex justify-between header-div" style={{ width: "100vw" }}>
             <div className="flex items-center">
 
                 <img src={logo} width={55} />
