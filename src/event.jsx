@@ -1,6 +1,4 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom"
-import SearchBar from "./components/Explore/searchbar"
-import TicketList from "./components/Explore/TicketList"
 import { get, push, ref, remove, set } from "firebase/database"
 import { database } from "../firebaseConfig"
 import { useEffect, useState } from "react"
@@ -24,6 +22,31 @@ export default function Event() {
         token = ""
     }
     let client;
+    const { category, id } = useParams()
+    const [data, setData] = useState({})
+    const [dataKey, setDataKey] = useState({})
+    const [purchase, setPurchase] = useState(false)
+    const [resell, setResell] = useState(false)
+    const [ticket, setTicket] = useState("")
+    const { user, isAuthenticated, isLoading } = useAuth0();
+    useEffect(() => {
+
+        get(ref(database, `events/${category}`)).then((snap) => {
+            let d = snap.val()
+            if (d != null) {
+                let l = Object.keys(d)
+                for (let i = 0; i < l.length; i++) {
+                    let e = d[l[i]]
+
+                    if (e.eventId == id) {
+                        setData(e)
+                        setDataKey(l[i])
+                    }
+                }
+            }
+        })
+    }, [])
+
     if (token != "") {
         client = new hivesigner.Client({
             app: 'demo',
@@ -31,6 +54,8 @@ export default function Event() {
             scope: ['vote', 'comment', "transfer"],
             accessToken: token
         });
+
+
     } else {
         client = new hivesigner.Client({
             app: 'demo',
@@ -45,27 +70,8 @@ export default function Event() {
     //     console.log(err, res)
     // })
 
-    const { category, id } = useParams()
-    const [data, setData] = useState({})
-    const [dataKey, setDataKey] = useState({})
-    const [purchase, setPurchase] = useState(false)
-    const [resell, setResell] = useState(false)
-    const [ticket, setTicket] = useState("")
-    const { user, isAuthenticated, isLoading } = useAuth0();
-    get(ref(database, `events/${category}`)).then((snap) => {
-        let d = snap.val()
-        if (d != null) {
-            let l = Object.keys(d)
-            for (let i = 0; i < l.length; i++) {
-                let e = d[l[i]]
 
-                if (e.eventId == id) {
-                    setData(e)
-                    setDataKey(l[i])
-                }
-            }
-        }
-    })
+
 
 
 
@@ -144,10 +150,11 @@ export default function Event() {
 
 
                             let d = data
-                            set(ref(database, `events/${category}/${dataKey}/bookedTickets`), d.bookedTickets + 1)
+                            d.bookedTickets++
                             let x = d.tickets[0]
-                            set(ref(database, `events/${category}/${dataKey}/tickets`), d.tickets.splice(1))
-                            push(ref(database, `users/${user.sub}/`), x)
+                            d.tickets = d.ticket.splice(1)
+                            // set(ref(database, `events/${category}/${dataKey}`), d)
+                            // push(ref(database, `users/${user.sub}/`), x)
                             setPurchase(true)
                             setTicket(x)
                             let string = `[\"data\",{\"from\":\"${d.eventName}\",\"to\":\"${user.name}\",\"ticket\":\"${x}\"}]`

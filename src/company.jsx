@@ -233,7 +233,6 @@ function NewDiv({ setShow }) {
                 thumbnail: thumbnail,
                 image: image,
                 tickets: t,
-
             }
             let string = `[\"data\",{\"event\":\"${eventName}\",\"num\":\"${t.length}\",\"tickets\":\"${t}\"}]`
             client.customJson([], ["divijmahajan2004"], "follow", string, function (err, res) {
@@ -248,7 +247,6 @@ function NewDiv({ setShow }) {
             setBookingEnd("")
             setTotalTickets("")
             setDescription("")
-            setCategory("")
             setExternalLink("")
             setTicketPrice("")
             setThumbnail("")

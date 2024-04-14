@@ -1,8 +1,11 @@
 import { useLocation, useParams } from "react-router-dom"
 import SearchBar from "./components/Explore/searchbar"
 import TicketList from "./components/Explore/TicketList"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { get, ref } from "firebase/database";
+import { database } from "../firebaseConfig";
 export default function Explore() {
+
     const routePath = useLocation();
     const onTop = () => {
         window.scrollTo(0, 0);
@@ -10,40 +13,27 @@ export default function Explore() {
     useEffect(() => {
         onTop()
     }, [routePath]);
-    let data = [
-        {
-            eventId: "grubfest2024",
-            eventName: "The Grub Fest",
-            eventDate: "29/03/24",
-            bookingStart: "20/03/24",
-            bookingEnd: "28/03/24",
-            totalTickets: -1,
-            bookedTickets: 50000,
-            description: "India's premier food festival",
-            externalLink: "https://www.instagram.com/thegrubfest/?hl=en",
-            ticketPrice: 800,
-            category: "Concerts",
-            thumbnail: "category/ConcertsHero.png",
-        },
-        {
-            eventId: "engi2024",
-            eventName: "EngiFest",
-            eventDate: "15/02/24",
-            location: "DTU Campus",
-            bookingStart: "08/02/24",
-            bookingEnd: "14/02/24",
-            totalTickets: -1,
-            bookedTickets: 100000,
-            description: "Engifest DTU is the annual cultural festival hosted by Delhi Technological University (DTU), showcasing a blend of talent, creativity, and innovation through various competitions, performances, and events.",
-            externalLink: "https://www.engifest.in/",
-            ticketPrice: 0,
-            category: "Concerts",
-            thumbnail: "engifest.png",
-        },
-    ]
-    data = data.concat(data)
-    data = data.concat(data)
+
+
     const { category } = useParams()
+    const [data, setData] = useState([])
+    useEffect(() => {
+        get(ref(database, `/events/${category}`)).then((snap) => {
+            let d = snap.val()
+            if (d) {
+                let tempData = []
+                let z = Object.keys(d)
+                for (let j = 0; j < z.length; j++) {
+                    tempData.push(d[z[j]])
+                }
+                setData((xyz) => {
+                    return [...tempData, ...tempData, ...tempData]
+                })
+
+            }
+        })
+
+    }, [])
     let taglines = {
         Hotels: "Hotels that will make you want to book again....",
         Sports: "For every heart beating for sports...",

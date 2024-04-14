@@ -1,11 +1,33 @@
 
-import { Suspense, useEffect, useRef } from "react"
+import { Suspense, useEffect, useRef, useState } from "react"
 import HomeBackground from "./components/Home/homeBackground"
 import Category from "./components/Home/Category"
 import { useLocation, useNavigate } from "react-router-dom"
 import TicketList from "./components/Explore/TicketList"
+import { get, ref } from "firebase/database"
+import { database } from "../firebaseConfig"
 
 function Home() {
+    const [data, setData] = useState([])
+    useEffect(() => {
+        get(ref(database, "/events")).then((snap) => {
+            let d = snap.val()
+            if (d && data.length == 0) {
+                let tempData = []
+                let k = Object.keys(d)
+                for (let i = 0; i < k.length; i++) {
+                    let z = Object.keys(d[k[i]])
+                    for (let j = 0; j < z.length; j++) {
+                        tempData.push(d[k[i]][z[j]])
+                    }
+                }
+                setData((xyz) => {
+                    return tempData
+                })
+            }
+        })
+
+    }, [])
     const routePath = useLocation();
     const onTop = () => {
         window.scrollTo(0, 0);
@@ -13,39 +35,40 @@ function Home() {
     useEffect(() => {
         onTop()
     }, [routePath]);
-    let data = [
-        {
-            eventId: "grubfest2024",
-            eventName: "The Grub Fest",
-            eventDate: "29/03/24",
-            bookingStart: "20/03/24",
-            bookingEnd: "28/03/24",
-            totalTickets: -1,
-            bookedTickets: 50000,
-            description: "India's premier food festival",
-            externalLink: "https://www.instagram.com/thegrubfest/?hl=en",
-            ticketPrice: 800,
-            category: "Concerts",
-            thumbnail: "category/ConcertsHero.png",
-        },
-        {
-            eventId: "engi2024",
-            eventName: "EngiFest",
-            eventDate: "15/02/24",
-            location: "DTU Campus",
-            bookingStart: "08/02/24",
-            bookingEnd: "14/02/24",
-            totalTickets: -1,
-            bookedTickets: 100000,
-            description: "Engifest DTU is the annual cultural festival hosted by Delhi Technological University (DTU), showcasing a blend of talent, creativity, and innovation through various competitions, performances, and events.",
-            externalLink: "https://www.engifest.in/",
-            ticketPrice: 0,
-            category: "Concerts",
-            thumbnail: "engifest.png",
-        },
-    ]
-    data = data.concat(data)
-    data = data.concat(data)
+
+    // let data = [
+    //     {
+    //         eventId: "grubfest2024",
+    //         eventName: "The Grub Fest",
+    //         eventDate: "29/03/24",
+    //         bookingStart: "20/03/24",
+    //         bookingEnd: "28/03/24",
+    //         totalTickets: -1,
+    //         bookedTickets: 50000,
+    //         description: "India's premier food festival",
+    //         externalLink: "https://www.instagram.com/thegrubfest/?hl=en",
+    //         ticketPrice: 800,
+    //         category: "Concerts",
+    //         thumbnail: "category/ConcertsHero.png",
+    //     },
+    //     {
+    //         eventId: "engi2024",
+    //         eventName: "EngiFest",
+    //         eventDate: "15/02/24",
+    //         location: "DTU Campus",
+    //         bookingStart: "08/02/24",
+    //         bookingEnd: "14/02/24",
+    //         totalTickets: -1,
+    //         bookedTickets: 100000,
+    //         description: "Engifest DTU is the annual cultural festival hosted by Delhi Technological University (DTU), showcasing a blend of talent, creativity, and innovation through various competitions, performances, and events.",
+    //         externalLink: "https://www.engifest.in/",
+    //         ticketPrice: 0,
+    //         category: "Concerts",
+    //         thumbnail: "engifest.png",
+    //     },
+    // ]
+    // data = data.concat(data)
+    // data = data.concat(data)
     let aRef = useRef()
     const navigate = useNavigate()
     return (
@@ -85,7 +108,7 @@ function Home() {
             <div id="landing-category" className="w-full h-full pt-32 mt-44">
                 <div className="text-5xl mx-10">Categories</div>
                 <div className="absolute h-full">
-                    <Category />
+                    <Category tData={data} />
                 </div>
             </div>
             <div id="landing-featured" className="w-full h-full z-100">
