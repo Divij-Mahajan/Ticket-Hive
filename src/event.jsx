@@ -1,15 +1,48 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import SearchBar from "./components/Explore/searchbar"
 import TicketList from "./components/Explore/TicketList"
 import { get, push, ref, set } from "firebase/database"
 import { database } from "../firebaseConfig"
 import { useState } from "react"
 import { useAuth0 } from "@auth0/auth0-react"
+import hivesigner from "hivesigner"
 export default function Event() {
+    const navigate = useNavigate()
+    let token;
+    try {
+
+        token = window.location.href.split("?")[1].split("&")[0].split("=")[1]
+    } catch {
+        token = ""
+    }
+    let client;
+    if (token != "") {
+        client = new hivesigner.Client({
+            app: 'demo',
+            callbackURL: window.location.href,
+            scope: ['vote', 'comment', "transfer"],
+            accessToken: token
+        });
+    } else {
+        client = new hivesigner.Client({
+            app: 'demo',
+            callbackURL: window.location.href,
+            scope: ['vote', 'comment', "transfer"],
+        });
+        let state;
+        var link = client.getLoginURL(state);
+        window.location.replace(link);
+    }
+    // client.me((err, res) => {
+    //     console.log(err, res)
+    // })
+
     const { category, id } = useParams()
     const [data, setData] = useState({})
     const [dataKey, setDataKey] = useState({})
     const [purchase, setPurchase] = useState(false)
+    const [resell, setResell] = useState(false)
+    const [ticket, setTicket] = useState("")
     const { user, isAuthenticated, isLoading } = useAuth0();
     get(ref(database, `events/${category}`)).then((snap) => {
         let d = snap.val()
@@ -25,6 +58,7 @@ export default function Event() {
             }
         }
     })
+
 
 
     return (<div className="w-full h-full">
@@ -51,13 +85,28 @@ export default function Event() {
                         <span>Price : </span>
                         <span className="text-6xl font-thin">{data.ticketPrice}/-</span>
                     </div>
-                    {purchase ? <div>Purchased</div> : (<button onClick={() => {
+                    {purchase ? ((!resell) ? <button onClick={() => {
+                        let d = data
+                        set(ref(database, `resell/${user.sub}`), ticket)
+                        setResell(true)
+                        let string = `[\"data\",{\"from\":\"${user.name}\",\"to\":\"${null}\",\"ticket\":\"${ticket}\"}]`
+                        client.customJson([], ["divijmahajan2004"], "follow", string, function (err, res) {
+                            console.log(err, res)
+                        });
+                        console.log(JSON.parse(string))
+                    }} className="ml-32 bg-white text-black ">Resell</button> : <div>Waiting for Buyer...</div>) : (<button onClick={() => {
                         let d = data
                         set(ref(database, `events/${category}/${dataKey}/bookedTickets`), d.bookedTickets + 1)
                         let x = d.tickets[0]
                         set(ref(database, `events/${category}/${dataKey}/tickets`), d.tickets.splice(1))
                         push(ref(database, `users/${user.sub}/`), x)
                         setPurchase(true)
+                        setTicket(x)
+                        let string = `[\"data\",{\"from\":\"${d.eventName}\",\"to\":\"${user.name}\",\"ticket\":\"${x}\"}]`
+                        client.customJson([], ["divijmahajan2004"], "follow", string, function (err, res) {
+                            console.log(err, res)
+                        });
+                        console.log(JSON.parse(string))
                     }} className="ml-32 bg-white text-black ">Buy</button>)}
                 </div>
             </div>

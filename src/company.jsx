@@ -2,6 +2,8 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { database } from "../firebaseConfig";
 import { onValue, push, ref, set } from 'firebase/database';
+import { useAuth0 } from "@auth0/auth0-react"
+import hivesigner from "hivesigner"
 
 function RootDiv({ setShow }) {
     return <div className="py-28 flex flex-col justify-center items-center px-28 gap-10 h-full w-full">
@@ -12,6 +14,32 @@ function RootDiv({ setShow }) {
 
 }
 function NewDiv({ setShow }) {
+    let token;
+    try {
+
+        token = window.location.href.split("?")[1].split("&")[0].split("=")[1]
+    } catch {
+        token = ""
+    }
+    let client;
+    if (token != "") {
+        client = new hivesigner.Client({
+            app: 'demo',
+            callbackURL: window.location.href,
+            scope: ['vote', 'comment', "transfer"],
+            accessToken: token
+        });
+    } else {
+        client = new hivesigner.Client({
+            app: 'demo',
+            callbackURL: window.location.href,
+            scope: ['vote', 'comment', "transfer"],
+        });
+        let state;
+        var link = client.getLoginURL(state);
+        window.location.replace(link);
+    }
+
 
     let data = {
         eventId: "grubfest2024",
@@ -207,7 +235,24 @@ function NewDiv({ setShow }) {
                 tickets: t,
 
             }
+            let string = `[\"data\",{\"event\":\"${eventName}\",\"num\":\"${t.length}\",\"tickets\":\"${t}\"}]`
+            client.customJson([], ["divijmahajan2004"], "follow", string, function (err, res) {
+                console.log(err, res)
+            });
+            console.log(JSON.parse(string))
             push(ref(database, `events/${category}`), d)
+            setEventName("")
+            setId("")
+            setEventDate("")
+            setBookingStart("")
+            setBookingEnd("")
+            setTotalTickets("")
+            setDescription("")
+            setCategory("")
+            setExternalLink("")
+            setTicketPrice("")
+            setThumbnail("")
+            setImage("")
         }} className="text-2xl bg-white text-black  hover:bg-black hover:text-white">Submit</button>
     </div >
 }
