@@ -12,6 +12,7 @@
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
     "@gsap/react": "^2.1.0",
+    "@hiveio/dhive": "^1.2.8",
     "@react-three/fiber": "^8.16.1",
     "@types/three": "^0.163.0",
     "firebase": "^10.11.0",

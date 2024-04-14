@@ -1,11 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom"
 import SearchBar from "./components/Explore/searchbar"
 import TicketList from "./components/Explore/TicketList"
-import { get, push, ref, set } from "firebase/database"
+import { get, push, ref, remove, set } from "firebase/database"
 import { database } from "../firebaseConfig"
 import { useState } from "react"
 import { useAuth0 } from "@auth0/auth0-react"
 import hivesigner from "hivesigner"
+import { Client } from "@hiveio/dhive"
 export default function Event() {
     const navigate = useNavigate()
     let token;
@@ -94,19 +95,60 @@ export default function Event() {
                             console.log(err, res)
                         });
                         console.log(JSON.parse(string))
+                        let opts = {};
+
+                        //connect to production server
+                        opts.addressPrefix = 'STM';
+                        opts.chainId =
+                            'beeab0de00000000000000000000000000000000000000000000000000000000';
+
+                        //connect to server which is connected to the network/production
+                        const cl = new Client('https://api.hive.blog');
+                        let stream = cl.blockchain.getBlockStream();
+                        stream
+                            .on('data', function (block) {
+                                let transactions = block.transactions
+                                for (let i = 0; i < transactions.length; i++) {
+                                    const op = transactions[i].operations;
+
+                                    if (op[0][0] == "custom_json") {
+                                        let k = JSON.parse(op[0][1].json)
+                                        console.log(k)
+                                        if (Object.keys(k)[0] == "data") {
+                                            if (k["data"]["to"] == null) {
+                                                setPurchase(false)
+                                            }
+                                            remove(ref(database, `users/${user.sub}/`), x)
+                                        }
+                                    }
+
+
+
+                                }
+
+                            })
+                            .on('end', function () {
+                                console.log('END');
+                            });
                     }} className="ml-32 bg-white text-black ">Resell</button> : <div>Waiting for Buyer...</div>) : (<button onClick={() => {
-                        let d = data
-                        set(ref(database, `events/${category}/${dataKey}/bookedTickets`), d.bookedTickets + 1)
-                        let x = d.tickets[0]
-                        set(ref(database, `events/${category}/${dataKey}/tickets`), d.tickets.splice(1))
-                        push(ref(database, `users/${user.sub}/`), x)
-                        setPurchase(true)
-                        setTicket(x)
-                        let string = `[\"data\",{\"from\":\"${d.eventName}\",\"to\":\"${user.name}\",\"ticket\":\"${x}\"}]`
-                        client.customJson([], ["divijmahajan2004"], "follow", string, function (err, res) {
-                            console.log(err, res)
-                        });
-                        console.log(JSON.parse(string))
+                        if (!isAuthenticated) {
+                            alert("Please login before continuing ->")
+                        } else {
+
+
+                            let d = data
+                            set(ref(database, `events/${category}/${dataKey}/bookedTickets`), d.bookedTickets + 1)
+                            let x = d.tickets[0]
+                            set(ref(database, `events/${category}/${dataKey}/tickets`), d.tickets.splice(1))
+                            push(ref(database, `users/${user.sub}/`), x)
+                            setPurchase(true)
+                            setTicket(x)
+                            let string = `[\"data\",{\"from\":\"${d.eventName}\",\"to\":\"${user.name}\",\"ticket\":\"${x}\"}]`
+                            client.customJson([], ["divijmahajan2004"], "follow", string, function (err, res) {
+                                console.log(err, res)
+                            });
+                            console.log(JSON.parse(string))
+                        }
                     }} className="ml-32 bg-white text-black ">Buy</button>)}
                 </div>
             </div>
