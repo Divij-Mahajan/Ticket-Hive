@@ -14,5 +14,5 @@ https://ticket-hive.vercel.app/
 
 ## Documentation
 
-[Project Link](https://www.canva.com/design/DAGCF8myax8/dC3ITEtnAOu03HCBqWnW3Q/view?utm_content=DAGCF8myax8&utm_campaign=designshare&utm_medium=link&utm_source=editor)
-[Detailed Video Link](https://www.youtube.com/watch?v=wXrfDWxH1mM)
+Project Link-https://www.canva.com/design/DAGCF8myax8/dC3ITEtnAOu03HCBqWnW3Q/view?utm_content=DAGCF8myax8&utm_campaign=designshare&utm_medium=link&utm_source=editor
+
