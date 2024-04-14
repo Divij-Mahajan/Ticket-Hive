@@ -20,6 +20,7 @@ https://ticket-hive.vercel.app/
 
 ## Documentation
 Presentation Link-https://www.canva.com/design/DAGCF8myax8/dC3ITEtnAOu03HCBqWnW3Q/view?utm_content=DAGCF8myax8&utm_campaign=designshare&utm_medium=link&utm_source=editor
+Devfolio Link-https://devfolio.co/projects/ticket-hive-8c4a
 
 ## Contributors
 <a href="https://github.com/Divij-Mahajan/Ticket-Hive/graphs/contributors">
