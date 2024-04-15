@@ -152,7 +152,7 @@ export default function Event() {
                             let d = data
                             d.bookedTickets++
                             let x = d.tickets[0]
-                            d.tickets = d.ticket.splice(1)
+                            d.tickets = d.tickets.splice(1)
                             // set(ref(database, `events/${category}/${dataKey}`), d)
                             // push(ref(database, `users/${user.sub}/`), x)
                             setPurchase(true)
