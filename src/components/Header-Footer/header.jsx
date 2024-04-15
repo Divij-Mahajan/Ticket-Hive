@@ -42,7 +42,7 @@ function Header() {
             </div>
             <div className="flex items-center gap-5 text-xl">
                 {categories.map((category, i) => {
-                    return <div className="hover:scale-110" onClick={() => { navigate(`/${category}`) }}>{category}</div>
+                    return <a className="hover:scale-110" href={`/${category}`}>{category}</a>
                 })}
             </div>
             <div className="text-2xl mr-4 flex items-center gap-10">
