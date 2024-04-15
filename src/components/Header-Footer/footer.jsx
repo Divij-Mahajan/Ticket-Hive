@@ -2,7 +2,7 @@
 
 function Footer() {
   return (
-    <footer className="bg-gray-910 text-white py-4 text-center bottom-0">
+    <footer className="bg-gray-900 text-white py-4 text-center bottom-0">
       <div className="container mx-auto">
         <p className="text-sm">
           &copy; {new Date().getFullYear()} Ticket Hive. All rights reserved.

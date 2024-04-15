@@ -131,7 +131,7 @@ function Home() {
                 <div className="h-10 w-full"></div>
                 <TicketList data={reverseArr(data)} />
             </div>
-            <div className="h-10 w-full"></div>
+            <div className="h-20 w-full"></div>
             <AboutUs />
             {pop && <Popup setPop={setPop} />}
 

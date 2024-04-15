@@ -60,5 +60,7 @@ export default function Explore() {
             <div className="text-3xl text-white mt-24 mx-10 mb-6">More</div>
             <TicketList data={data} />
         </div>
+        <div className="h-20 w-full"></div>
+        
     </div>)
 }
