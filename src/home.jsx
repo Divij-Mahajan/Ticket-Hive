@@ -7,6 +7,14 @@ import TicketList from "./components/Explore/TicketList"
 import { get, ref } from "firebase/database"
 import { database } from "../firebaseConfig"
 
+function reverseArr(input) {
+    var ret = new Array;
+    for (var i = input.length - 1; i >= 0; i--) {
+        ret.push(input[i]);
+    }
+    return ret;
+}
+
 function Home() {
     const [data, setData] = useState([])
     useEffect(() => {
@@ -115,7 +123,7 @@ function Home() {
                 <div className="text-3xl text-white mx-10 mb-6 mt-24 pt-32">Featured</div>
                 <TicketList data={data} />
                 <div className="h-10 w-full"></div>
-                <TicketList data={data} />
+                <TicketList data={reverseArr(data)} />
             </div>
         </div>
     )
