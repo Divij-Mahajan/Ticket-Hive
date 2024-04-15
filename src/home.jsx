@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import TicketList from "./components/Explore/TicketList"
 import { get, ref } from "firebase/database"
 import { database } from "../firebaseConfig"
+import Popup from "./components/Home/Popup"
 
 function reverseArr(input) {
     var ret = new Array;
@@ -77,6 +78,7 @@ function Home() {
     // ]
     // data = data.concat(data)
     // data = data.concat(data)
+    const [pop, setPop] = useState(false)
     let aRef = useRef()
     const navigate = useNavigate()
     return (
@@ -125,6 +127,8 @@ function Home() {
                 <div className="h-10 w-full"></div>
                 <TicketList data={reverseArr(data)} />
             </div>
+            {pop && <Popup setPop={setPop} />}
+
         </div>
     )
 }

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { useAuth0 } from "@auth0/auth0-react"
 import hivesigner from "hivesigner"
 import { Client } from "@hiveio/dhive"
+import Popup from "./components/Home/Popup"
 export default function Event() {
     const routePath = useLocation();
     const onTop = () => {
@@ -29,6 +30,9 @@ export default function Event() {
     const [resell, setResell] = useState(false)
     const [ticket, setTicket] = useState("")
     const { user, isAuthenticated, isLoading } = useAuth0();
+    const [pop, setPop] = useState(true)
+    const [popBuy, setPopBuy] = useState(false)
+    const [popResell, setPopResell] = useState(false)
     useEffect(() => {
 
         get(ref(database, `events/${category}`)).then((snap) => {
@@ -45,6 +49,9 @@ export default function Event() {
                 }
             }
         })
+        if (token != "") {
+            setPop(false)
+        }
     }, [])
 
     if (token != "") {
@@ -54,6 +61,7 @@ export default function Event() {
             scope: ['vote', 'comment', "transfer"],
             accessToken: token
         });
+
 
 
     } else {
@@ -143,6 +151,7 @@ export default function Event() {
                             .on('end', function () {
                                 console.log('END');
                             });
+                        setPopResell(true)
                     }} className="ml-32 bg-white text-black ">Resell</button> : <div>Waiting for Buyer...</div>) : (<button onClick={() => {
                         if (!isAuthenticated) {
                             alert("Please login before continuing ->")
@@ -162,10 +171,14 @@ export default function Event() {
                                 console.log(err, res)
                             });
                             console.log(JSON.parse(string))
+                            setPopBuy(true)
                         }
                     }} className="ml-32 bg-white text-black ">Buy</button>)}
                 </div>
             </div>
         </div>
+        {pop && <Popup setPop={setPop} head={"Redirecting..."} body={"Redirecting you to hivesigner's authentication page please wait for few moments"} />}
+        {popBuy && <Popup setPop={setPopBuy} head={"Hoorayyy....."} body={"You have succesfully purchased the ticket. Enjoy your event or journery"} />}
+        {popResell && <Popup setPop={setPopResell} head={"On Reselling"} body={"You have put your ticket on Resell, kindly wait for a potential buyer to complete the transaction."} />}
     </div>)
 }

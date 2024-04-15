@@ -4,6 +4,7 @@ import { database } from "../firebaseConfig";
 import { onValue, push, ref, set } from 'firebase/database';
 import { useAuth0 } from "@auth0/auth0-react"
 import hivesigner from "hivesigner"
+import Popup from "./components/Home/Popup";
 
 function RootDiv({ setShow }) {
     return <div className="py-28 flex flex-col justify-center items-center px-28 gap-10 h-full w-full">
@@ -22,6 +23,7 @@ function NewDiv({ setShow }) {
         token = ""
     }
     let client;
+
     if (token != "") {
         client = new hivesigner.Client({
             app: 'demo',
@@ -41,23 +43,7 @@ function NewDiv({ setShow }) {
     }
 
 
-    let data = {
-        eventId: "grubfest2024",
-        eventName: "The Grub Fest",
-        company: "somecompany",
-        eventDate: "29/03/24",
-        bookingStart: "20/03/24",
-        bookingEnd: "28/03/24",
-        totalTickets: -1,
-        bookedTickets: 50000,
-        description: "Grub Fest is India's ultimate food festival, a melting pot of flavors, where foodies unite to savor a variety of delectable dishes from across the country.",
-        externalLink: "https://www.instagram.com/thegrubfest/?hl=en",
-        ticketPrice: 800,
-        category: "Concerts",
-        thumbnail: "category/ConcertsHero.png",
-        image: "/grub.png",
-        bookingOpen: true
-    }
+
     const [eventName, setEventName] = useState("")
     const [eventId, setId] = useState("")
     const [eventDate, setEventDate] = useState('');
@@ -70,6 +56,7 @@ function NewDiv({ setShow }) {
     const [ticketPrice, setTicketPrice] = useState('');
     const [thumbnail, setThumbnail] = useState('');
     const [image, setImage] = useState('');
+
     return <div className="py-28 flex flex-col justify-center items-center px-28 gap-10 h-full w-full">
         <button onClick={() => { setShow("root") }} className=" absolute top-2 right-2  text-md bg-white text-black hover:bg-black hover:text-white">Return</button>
         <div className="  flex flex-col gap-4">
@@ -252,6 +239,7 @@ function NewDiv({ setShow }) {
             setThumbnail("")
             setImage("")
         }} className="text-2xl bg-white text-black  hover:bg-black hover:text-white">Submit</button>
+
     </div >
 }
 function PastDiv({ setShow }) {
@@ -292,6 +280,7 @@ function PastDiv({ setShow }) {
                 </tr>
             })}
         </table>
+
     </div>
 }
 
@@ -300,6 +289,10 @@ function Company() {
     const onTop = () => {
         window.scrollTo(0, 0);
     }
+    let token;
+
+
+
     useEffect(() => {
         onTop()
     }, [routePath]);
@@ -344,6 +337,8 @@ function Company() {
                     }
                 </div>
             </div>
+
+
         </div>
     )
 }
