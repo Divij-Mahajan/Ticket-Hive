@@ -21,7 +21,7 @@ export default function AboutUs() {
     let shift = contextSafe((translateVal) => {
         gsap.to(".aboutus", { translateX: translateVal });
     })
-
+    //test
 
 
     return <div className="fixed aboutus  bottom-0 left-0 w-2/5 z-50 " onClick={() => {
