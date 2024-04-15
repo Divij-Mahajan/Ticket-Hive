@@ -7,6 +7,7 @@ import TicketList from "./components/Explore/TicketList"
 import { get, ref } from "firebase/database"
 import { database } from "../firebaseConfig"
 import Popup from "./components/Home/Popup"
+import AboutUs from "./components/Home/about"
 
 function reverseArr(input) {
     var ret = new Array;
@@ -127,6 +128,7 @@ function Home() {
                 <div className="h-10 w-full"></div>
                 <TicketList data={reverseArr(data)} />
             </div>
+            <AboutUs />
             {pop && <Popup setPop={setPop} />}
 
         </div>
