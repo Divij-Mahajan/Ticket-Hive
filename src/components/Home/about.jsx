@@ -29,36 +29,36 @@ export default function AboutUs() {
         setClose(!close)
     }}>
         <img src="/aboutus.png" style={{ height: "100%", width: "100%", opacity: 0.95, }} ></img>
-        <div className="absolute top-0 left-0 h-full w-full p-8 text-black text-sm" >
-            <div className="text-xl ml-5">The UnBounds</div>
+        <div className="absolute top-0 left-0 h-full w-full p-10 text-black" >
+            <div className="text-xl ml-10">The UnBounds</div>
             {/* <div className="px-12 ml-10 pt-2"> Ticket Hive is a decentralised ticketing platform, providing users a once stop solution for all thier ticket needs with many great features.</div> */}
-            <div className="px-12 ml-7 pt-1"> The UnBounds, the team behind Ticket Hive, is a team of 2 dedicated developers eager to explore various field and ready to take up any challenges thrown at them.</div>
-            <div className="px-12 ml-12 pt-1 flex justify-between mr-10 items-center ">
+            <div className="px-12 ml-10 pt-4"> The UnBounds, the team behind Ticket Hive, is a team of 2 dedicated developers eager to explore various field and ready to take up any challenges thrown at them.</div>
+            <div className="px-12 ml-16 pt-2 flex justify-between mr-10 items-center ">
                 <div>
                     Rhytham Aggarwal
                 </div>
                 <div className="flex gap-2">
 
                     <a href="https://github.com/aggrhythm">
-                        <FaGithub size={22} />
+                        <FaGithub size={25} />
                     </a>
                     <a href="https://github.com/aggrhythm">
-                        <FaLinkedinIn size={22} />
+                        <FaLinkedinIn size={25} />
                     </a>
                 </div>
             </div>
 
-            <div className="px-12 ml-12 p-1 flex  justify-between mr-10 items-center">
+            <div className="px-12 ml-16 pt-1 flex  justify-between mr-10 items-center">
                 <div>
                     Divij Mahajan
                 </div>
                 <div className="flex gap-2">
 
                     <a href="https://github.com/Divij-Mahajan">
-                        <FaGithub size={22} />
+                        <FaGithub size={25} />
                     </a>
                     <a href="https://www.linkedin.com/in/divij-mahajan-73b17b250/">
-                        <FaLinkedinIn size={22} />
+                        <FaLinkedinIn size={25} />
                     </a>
                 </div>
             </div>
