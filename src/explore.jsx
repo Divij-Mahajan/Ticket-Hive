@@ -43,7 +43,7 @@ export default function Explore() {
         Trains: "Heading somewhere? Book a train...",
         Bus: "Kabhi Bus bhi karo yr..."
     }
-    return (<div className="w-full h-full">
+    return (<div className="w-full ">
         <img className="mt-24 w-full" src={`/category/${category}Hero.png`}></img>
         <div className=" bg-gradient-to-r from-black via-[rgba(0,0,0,0.64)] to-transparent  w-full h-full absolute top-0 left-0 mt-12"></div>
         <div className=" w-1/2 h-full absolute top-0 left-0 mt-40 pt-20 px-10 ml-16">

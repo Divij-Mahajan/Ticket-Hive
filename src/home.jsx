@@ -83,7 +83,7 @@ function Home() {
     let aRef = useRef()
     const navigate = useNavigate()
     return (
-        <div className='w-full h-full '>
+        <div className='w-full '>
             <div id="landing-home" className="absolute top-0 left-0 w-full h-full -z-10">
                 <Suspense>
 
@@ -116,18 +116,22 @@ function Home() {
                 </div>
 
             </div>
+            <div className="h-10 w-full"></div>
             <div id="landing-category" className="w-full h-full pt-32 mt-44">
                 <div className="text-5xl mx-10">Categories</div>
-                <div className="absolute h-full">
+                <div className="h-10 w-full"></div>
+                <div className="absolute">
                     <Category tData={data} />
                 </div>
             </div>
-            <div id="landing-featured" className="w-full h-full z-100">
+            <div className="h-20 w-full"></div>
+            <div id="landing-featured" className="w-full relative mt-80 z-100">
                 <div className="text-3xl text-white mx-10 mb-6 mt-24 pt-32">Featured</div>
                 <TicketList data={data} />
                 <div className="h-10 w-full"></div>
                 <TicketList data={reverseArr(data)} />
             </div>
+            <div className="h-10 w-full"></div>
             <AboutUs />
             {pop && <Popup setPop={setPop} />}
 
