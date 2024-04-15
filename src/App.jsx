@@ -16,6 +16,7 @@ function App() {
         <Route path="/:category" element={<Explore />} />
         <Route path="/:category/:id" element={<Event />} />
       </Routes>
+      <Footer />
     </Router>
   )
 }
